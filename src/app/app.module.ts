@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { ConfigComponent } from './components/config/config.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FetchListComponent } from './components/fetch-list/fetch-list.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     ConfigComponent,
     FetchListComponent,
+    HomeComponent,
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

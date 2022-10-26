@@ -1,7 +1,7 @@
-import { AlertType } from './../_models/alert-type.enum';
-import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { IAlert } from '../_models/alert.interface';
+import { BehaviorSubject } from 'rxjs';
+import { AlertType } from 'src/app/_models/enums/alert-type.enum';
+import { IAlert } from 'src/app/_models/interfaces/alert.interface';
 
 @Injectable({
   providedIn: 'root'

@@ -1,1 +1,25 @@
-<p>fetch-list works!</p>
+<button (click)="start();"
+        type="button"
+        class="btn btn-primary">Start</button>
+
+<div class="mt-3"
+     *ngIf="listInfo">
+  <label>
+    Fetched pages {{ fetchedPageCount }} / {{ listInfo.totalPages }}
+  </label>
+  <div class="progress">
+    <div class="progress-bar"
+         role="progressbar"
+         [style]="'width: ' + fetchedPageCount/listInfo.totalPages * 100 + '%'"></div>
+  </div>
+  <label class="mt-3">
+    Fetched stores {{ fetchedStoreCount }} / {{ listInfo.totals }}
+  </label>
+  <div class="progress">
+    <div class="progress-bar"
+         role="progressbar"
+         [style]="'width: ' + fetchedStoreCount/listInfo.totals * 100 + '%'"></div>
+  </div>
+</div>
+
+<span (click)="test()">test</span>
