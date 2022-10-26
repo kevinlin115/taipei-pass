@@ -1,0 +1,10 @@
+.alert-container {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 1rem;
+
+  > * {
+    max-width: 50vw;
+  }
+}

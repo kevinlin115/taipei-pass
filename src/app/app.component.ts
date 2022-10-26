@@ -1,3 +1,4 @@
+import { AlertService } from './_services/alert.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'taipei-pass';
+
+  constructor(
+    public alertService: AlertService
+  ) { }
+
 }
