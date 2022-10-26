@@ -20,6 +20,11 @@
          role="progressbar"
          [style]="'width: ' + fetchedStoreCount/listInfo.totals * 100 + '%'"></div>
   </div>
-</div>
 
-<span (click)="test()">test</span>
+  <div *ngIf="fetchedStoreCount === listInfo.totals"
+       class="mt-3">
+    <button (click)="download();"
+            type="button"
+            class="btn btn-primary">Download</button>
+  </div>
+</div>

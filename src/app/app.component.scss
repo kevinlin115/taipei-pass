@@ -3,6 +3,8 @@
   top: 0px;
   right: 0px;
   padding: 1rem;
+  max-height: 100vh;
+  overflow: hidden;
 
   > * {
     max-width: 50vw;
