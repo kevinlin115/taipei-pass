@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
+import * as _ from 'lodash';
 import { concat, mergeMap, of, tap } from 'rxjs';
 import { IPageList } from 'src/app/_models/interfaces/page-list.interface';
 import { IStore } from 'src/app/_models/interfaces/store.interface';
@@ -16,7 +17,7 @@ export class FetchListComponent implements OnInit {
 
   fetchedPageCount = 0;
   fetchedStoreCount = 0;
-  stores = {} as { [id: string]: IStore };
+  stores = {} as { [id: string]: Partial<IStore> };
 
   constructor(
     private taipeiPassService: TaipeiPassService,
@@ -61,7 +62,7 @@ export class FetchListComponent implements OnInit {
                 return this.taipeiPassService.getStoreInfo(id).pipe(
                   tap(store => {
                     this.fetchedStoreCount++;
-                    this.stores[store.id] = store;
+                    this.stores[store.id] = _.pick(store, ['name', 'district', 'address', 'earlyBird']);
                   })
                 );
               });
