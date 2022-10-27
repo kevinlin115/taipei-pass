@@ -1,5 +1,6 @@
-import { AlertService } from './_services/alert.service';
 import { Component } from '@angular/core';
+import { environment } from './../environments/environment';
+import { AlertService } from './_services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  get environment() { return environment; }
 
   constructor(
     public alertService: AlertService
