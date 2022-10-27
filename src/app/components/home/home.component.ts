@@ -1,6 +1,7 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 import { IStore } from 'src/app/_models/interfaces/store.interface';
 import * as Stores from 'src/assets/Stores.json';
 
@@ -9,10 +10,13 @@ import * as Stores from 'src/assets/Stores.json';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  displayStores = new FormControl(false);
+  displayStores = new FormControl(true);
+  boundChanged$ = new Subject();
+  boundSub: Subscription;
 
+  @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
   @ViewChildren(MapMarker) markers: QueryList<MapMarker>;
 
@@ -23,22 +27,49 @@ export class HomeComponent implements OnInit {
   readonly options: google.maps.MapOptions = {
     disableDefaultUI: true,
   }
-  readonly zoom = 15;
+  readonly zoom = 17;
   stores = [] as IStore[];
+  filteredStores = [] as IStore[];
 
   infoWindowValues = {
     name: '',
     address: ''
   };
 
-  constructor() { }
+  constructor() {
+    this.boundSub = this.boundChanged$.pipe(
+      debounceTime(300)
+    ).subscribe(() => this.refreshStores());
+  }
 
   ngOnInit(): void {
     this.initData();
   }
 
+  ngAfterViewInit(): void {
+    this.refreshStores();
+  }
+
+  ngOnDestroy(): void {
+    this.boundSub.unsubscribe();
+  }
+
   private initData() {
     this.stores = Object.values(Stores) as any;
+  }
+
+  onBoundsChange() {
+    this.refreshStores();
+  }
+
+  private refreshStores() {
+    this.filteredStores = [];
+    const bounds = this.map.getBounds();
+    if (!bounds) return;
+    this.filteredStores = this.stores.filter((store) => {
+      const latLng = new google.maps.LatLng(store.lat, store.lng);
+      return bounds.contains(latLng);
+    });
   }
 
   openInfo(index: number) {

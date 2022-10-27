@@ -12,7 +12,6 @@ export class ConfigService {
 
   constructor() {
     this.getToken();
-    console.error(this.token$.value)
   }
 
   saveToken(token: string) {
