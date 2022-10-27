@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { concat, mergeMap, of, tap } from 'rxjs';
 import { IPageList } from 'src/app/_models/interfaces/page-list.interface';
 import { IStore } from 'src/app/_models/interfaces/store.interface';
+import { GoogleMapService } from 'src/app/_services/google-map.service';
 import { TaipeiPassService } from 'src/app/_services/taipei-pass.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class FetchListComponent implements OnInit {
   stores = {} as { [id: string]: Partial<IStore> };
 
   constructor(
+    private googleMapService: GoogleMapService,
     private taipeiPassService: TaipeiPassService,
   ) { }
 
@@ -62,7 +64,14 @@ export class FetchListComponent implements OnInit {
                 return this.taipeiPassService.getStoreInfo(id).pipe(
                   tap(store => {
                     this.fetchedStoreCount++;
-                    this.stores[store.id] = _.pick(store, ['name', 'district', 'address', 'earlyBird']);
+                    this.stores[id] = _.pick(store, ['name', 'district', 'address', 'earlyBird']);
+                  }),
+                  mergeMap(store => {
+                    return this.googleMapService.geocode(store.address);
+                  }),
+                  tap(mapInfo => {
+                    this.stores[id].lat = mapInfo?.results[0]?.geometry?.location?.lat;
+                    this.stores[id].lng = mapInfo?.results[0]?.geometry?.location?.lng;
                   })
                 );
               });

@@ -6,4 +6,7 @@ export interface IStore extends IStoreSimple {
   description: string;
   district: string;
   logoImageURL: string;
+
+  lat: number,
+  lng: number,
 }
