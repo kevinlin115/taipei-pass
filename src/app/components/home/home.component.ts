@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openInfo(index: number) {
-    const store = this.stores[index];
+    const store = this.filteredStores[index];
     this.infoWindowValues = {
       name: store.name,
       address: store.address
